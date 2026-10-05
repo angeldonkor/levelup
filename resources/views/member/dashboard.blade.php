@@ -185,6 +185,22 @@
             opacity: 0.9;
         }
 
+        .leaderboard-button {
+            display: block;
+            margin-top: 10px;
+            padding: 11px 14px;
+            border-radius: 8px;
+            background: #22C55E;
+            color: #0F172A;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 700;
+        }
+
+        .leaderboard-button:hover {
+            opacity: 0.9;
+        }
+
         .success-message {
             margin-bottom: 20px;
             padding: 12px 14px;
@@ -340,6 +356,15 @@
                                     Deelnemen
                                 </button>
                             </form>
+                        @endif
+
+                        @if ($challenge->leaderboard_published)
+                            <a
+                                class="leaderboard-button"
+                                href="{{ route('member.leaderboards.show', $challenge) }}"
+                            >
+                                Leaderboard bekijken
+                            </a>
                         @endif
                     </article>
                 @endforeach
