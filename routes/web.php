@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\MemberDashboardController;
+use App\Http\Controllers\ResultController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -21,9 +23,25 @@ Route::middleware('auth')->group(function () {
         return redirect('/member/dashboard');
     })->name('dashboard');
 
-    Route::get('/member/dashboard', function () {
-        return view('dashboard');
-    })->middleware('role:member')->name('member.dashboard');
+    Route::get('/member/dashboard', [MemberDashboardController::class, 'index'])
+        ->middleware('role:member')
+        ->name('member.dashboard');
+
+    Route::post('/member/challenges/{challenge}/join', [MemberDashboardController::class, 'join'])
+        ->middleware('role:member')
+        ->name('member.challenges.join');
+
+    Route::get('/member/challenges/{challenge}/result', [ResultController::class, 'create'])
+        ->middleware('role:member')
+        ->name('member.results.create');
+
+    Route::post('/member/challenges/{challenge}/result', [ResultController::class, 'store'])
+        ->middleware('role:member')
+        ->name('member.results.store');
+
+    Route::get('/member/progress', [MemberDashboardController::class, 'progress'])
+        ->middleware('role:member')
+        ->name('member.progress');
 
     Route::get('/coach/dashboard', function () {
         return view('dashboard');
