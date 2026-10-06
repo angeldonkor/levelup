@@ -1,59 +1,154 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# LevelUp – Fitness Challenge Platform
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+LevelUp is een webapplicatie voor Momentum Lab waarmee sportleden kunnen deelnemen aan fitnesschallenges en hun resultaten kunnen bijhouden. Coaches kunnen challenges beheren, resultaten beoordelen en leaderboards publiceren.
 
-## About Laravel
+## Functionaliteiten
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+### Sportlid
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Een sportlid kan:
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+- inloggen;
+- actieve challenges bekijken;
+- deelnemen aan een challenge;
+- een resultaat invoeren;
+- een datum, waarde en bewijslink toevoegen aan een resultaat;
+- eigen voortgang bekijken;
+- de status van ingediende resultaten bekijken;
+- gepubliceerde leaderboards bekijken.
 
-## Learning Laravel
+### Coach
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Een coach kan:
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+- inloggen;
+- challenges aanmaken;
+- challenges wijzigen;
+- challenges verwijderen;
+- ingestuurde resultaten bekijken;
+- resultaten goedkeuren;
+- resultaten afkeuren;
+- resultaten markeren voor controle;
+- leaderboards bekijken;
+- leaderboards publiceren en intrekken.
 
-## Laravel Sponsors
+Alleen goedgekeurde resultaten worden opgenomen in een leaderboard.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+## Technieken
 
-### Premium Partners
+Het project is gebouwd met:
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+- PHP 8.2+
+- Laravel 12
+- MySQL
+- Blade
+- HTML
+- CSS
+- Git en GitHub
 
-## Contributing
+## Installatie
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 1. Repository clonen
 
-## Code of Conduct
+```bash
+git clone https://github.com/angeldonkor/levelup.git
+cd levelup
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+2. PHP-packages installeren
+composer install
 
-## Security Vulnerabilities
+3. Environment-bestand aanmaken
+Maak een .env-bestand op basis van .env.example: cp .env.example .env
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+4. Application key genereren
+php artisan key: generate
 
-## License
+5. Database aanmaken
+Maak in MySQL of phpMyAdmin een database aan met de naam: levelup
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Pas daarna in .env de database-instellingen aan:
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=levelup
+DB_USERNAME=root
+DB_PASSWORD=
+Pas DB_USERNAME en DB_PASSWORD aan wanneer jouw MySQL-installatie andere gegevens gebruikt.
+
+6. Database opbouwen en testgegevens toevoegen
+php artisan migrate --seed
+
+7. Applicatie starten
+php artisan serve
+
+Open daarna: http://127.0.0.1:8000
+
+Testaccounts
+
+Na het uitvoeren van de seeders zijn de volgende accounts beschikbaar.
+
+Sportlid
+
+E-mail: member@levelup.test
+Wachtwoord: LevelUp123!
+
+Coach
+E-mail: coach@levelup.test
+Wachtwoord: LevelUp123!
+
+Rollen en beveiliging
+
+LevelUp gebruikt twee rollen:
+
+* member
+* coach
+
+Een sportlid heeft geen toegang tot coachpagina’s. Een coach heeft geen toegang tot pagina’s die alleen voor sportleden bedoeld zijn.
+
+Wachtwoorden worden gehasht opgeslagen. Formulieren maken gebruik van server-side validatie en CSRF-bescherming.
+
+Resultaten
+
+Wanneer een sportlid een resultaat invoert, krijgt dit standaard de status pending.
+
+Een coach kan het resultaat daarna wijzigen naar:
+
+* approved
+* rejected
+* review
+
+Alleen resultaten met de status approved worden gebruikt voor het leaderboard.
+
+De ingevoerde waarde moet binnen de minimale en maximale waarde van de challenge vallen.
+
+Tests
+
+De geautomatiseerde tests kunnen worden uitgevoerd met: php artisan test
+
+De tests controleren onder andere:
+
+* toegang tot de loginpagina;
+* doorsturen vanaf de homepage;
+* rolgebaseerde toegang;
+* deelnemen aan een challenge;
+* validatie van resultaten;
+* opslaan van geldige resultaten;
+* uitsluiten van niet-goedgekeurde resultaten uit het leaderboard.
+
+Projectstructuur
+
+Belangrijke onderdelen van het project:
+app/Http/Controllers
+app/Http/Middleware
+app/Models
+database/migrations
+database/seeders
+resources/views
+routes/web.php
+tests/Feature
+
+GitHub
+
+Repository:
+
+https://github.com/angeldonkor/levelup
